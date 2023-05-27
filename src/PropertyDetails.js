@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {   useParams } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
 
 function PropertyDetails() {
   const { id } = useParams();
@@ -26,6 +28,8 @@ function PropertyDetails() {
       <p>{property.description}</p>
       <img src={property.image} alt={property.name} />
       <p>Price: {property.price}</p>
+      <Header/>
+      <Footer/>
     </div>
   );
 }
