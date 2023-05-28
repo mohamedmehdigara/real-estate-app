@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const port = 3000; // Change the port number if desired
 const mysql = require('mysql');
+const express = require('express');
+const bodyParser = require('body-parser');
 
 const pool = mysql.createPool({
   host: 'your-database-host',
@@ -23,7 +25,7 @@ app.listen(port, () => {
 app.set('pool', pool);
 
 app.post('/api/register', (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, additionalData } = req.body;
   
     // Perform user registration logic here, e.g., insert the user data into the database
   
@@ -42,3 +44,12 @@ app.post('/api/login', (req, res) => {
     }
   });
   
+  
+// ... other imports and code ...
+
+
+// Add the body-parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// ... other server configurations and routes ...
