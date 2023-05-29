@@ -70,7 +70,10 @@ app.post('/api/login', (req, res) => {
   const token = jwt.sign({ username }, 'your_secret_key');
 
   // Send the token in the response
-  res.json({ token });
+  res.cookie('auth_token', token, { httpOnly: true });
+  localStorage.setItem('auth_token', token);
+
+  res.json({ message: 'Login successful' });
   pool.query(
     'SELECT * FROM users WHERE username = ?',
     [username],
