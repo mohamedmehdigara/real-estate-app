@@ -5,12 +5,30 @@ const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+
+const mysql = require('mysql2');
+
+// Create a connection pool
 const pool = mysql.createPool({
-  host: 'your-database-host',
-  user: 'your-username',
-  password: 'your-password',
-  database: 'your-database-name'
+  host: 'localhost',
+  user: 'root', // Replace with your MySQL username
+  password: '', // Replace with your MySQL password
+  database: 'your_database_name' // Replace with your database name
 });
+
+// Use the pool to execute queries
+const executeQuery = (sql, values) => {
+  return new Promise((resolve, reject) => {
+    pool.query(sql, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
 
 
 app.use(express.json()); // Parse JSON requests
@@ -24,25 +42,44 @@ app.listen(port, () => {
 });
 app.set('pool', pool);
 
-app.post('/api/register', (req, res) => {
-    const { username, password, additionalData } = req.body;
-  
-    // Perform user registration logic here, e.g., insert the user data into the database
-  
+app.post('/api/register', async (req, res) => {
+  const { username, password, additionalData } = req.body;
+
+  try {
+    // Insert the user data into the database
+    const insertQuery = 'INSERT INTO users (username, password, additionalData) VALUES (?, ?, ?)';
+    await executeQuery(insertQuery, [username, password, additionalData]);
+
+    // Send a success response
     res.status(200).json({ message: 'Registration successful' });
-  });
+  } catch (error) {
+    console.log(error);
+
+    // Send an error response
+    res.status(500).json({ message: 'Error occurred during registration' });
+  }
+});
+
+
+
+// Assuming you have already set up your Express app and connected to your database
 
 app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
-  
-    // Perform user login/authentication logic here, e.g., validate the credentials against the database
-  
-    if (true) {
-      res.status(200).json({ message: 'Login successful' });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
-    }
-  });
+  const { username, password } = req.body;
+
+  // Perform necessary authentication logic here
+  // This can include querying the database to check if the username and password match
+
+  // Example pseudo-code for authentication logic
+  if (username === 'admin' && password === 'password') {
+    // Authentication successful
+    res.json({ message: 'Login successful' });
+  } else {
+    // Authentication failed
+    res.status(401).json({ message: 'Invalid username or password' });
+  }
+});
+
   
   
 // ... other imports and code ...

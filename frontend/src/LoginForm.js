@@ -3,7 +3,18 @@ import axios from 'axios';
 
 
 function LoginForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, formState: { errors } } = useForm();
+    const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  
   
     const onSubmit = async(data) => {
       // Handle form submission logic, e.g., send the login data to the backend server
@@ -15,6 +26,18 @@ function LoginForm() {
         console.log(error); // Log any errors
         // Display an error message to the user
       }
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+  
+      // Perform login request to the backend server
+      // Include the username and password in the request body
+  
+      console.log('Username:', username);
+      console.log('Password:', password);
+      setUsername('');
+      setPassword('');
     };
   
     return (
