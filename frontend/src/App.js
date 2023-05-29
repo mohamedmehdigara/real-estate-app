@@ -9,9 +9,13 @@ import ThankYouPage from './ThankYouPage';
 import Contact from './Contact';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
+import PrivateRoute from './PrivateRoute';
+
 
 
 function App() {
+  const isAuthenticated = true; // Set the authentication status based on your application logic
+
   return (
     <Router>
       <Header />
@@ -23,6 +27,11 @@ function App() {
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
+        <PrivateRoute
+          path="/dashboard"
+          component={Dashboard}
+          isAuthenticated={isAuthenticated}
+        />
       </Routes>
       <Footer />
     </Router>
