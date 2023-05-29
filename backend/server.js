@@ -28,6 +28,7 @@ const executeQuery = (sql, values) => {
     });
   });
 };
+const jwt = require('jsonwebtoken');
 
 
 
@@ -37,8 +38,8 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
 app.set('pool', pool);
 
@@ -66,6 +67,39 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
+  const token = jwt.sign({ username }, 'your_secret_key');
+
+  // Send the token in the response
+  res.json({ token });
+  pool.query(
+    'SELECT * FROM users WHERE username = ?',
+    [username],
+    (error, results) => {
+      if (error) {
+        console.error('Error querying database:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      // Check if a user record was found
+      if (results.length === 0) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+
+      // Get the first user record from the results
+      const user = results[0];
+
+      // Compare the provided password with the password stored in the user record
+      if (password === user.password) {
+        // Authentication successful
+        return res.json({ message: 'Login successful' });
+      } else {
+        // Authentication failed
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+    }
+  );
+});
+
 
   // Perform necessary authentication logic here
   // This can include querying the database to check if the username and password match
@@ -78,7 +112,7 @@ app.post('/api/login', (req, res) => {
     // Authentication failed
     res.status(401).json({ message: 'Invalid username or password' });
   }
-});
+
 
   
   
