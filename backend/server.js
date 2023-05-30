@@ -29,6 +29,18 @@ const executeQuery = (sql, values) => {
   });
 };
 const jwt = require('jsonwebtoken');
+const validateAuthToken = (token) => {
+  try {
+    // Verify and decode the token
+    const decodedToken = jwt.verify(token, 'your_secret_key');
+
+    // Return the decoded token payload
+    return decodedToken;
+  } catch (error) {
+    // Token verification failed or expired
+    return null;
+  }
+};
 
 
 
@@ -127,3 +139,4 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ... other server configurations and routes ...
+
