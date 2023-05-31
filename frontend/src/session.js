@@ -31,17 +31,32 @@ function retrieveAuthToken() {
   }
   
   // Function to handle session expiration and token refreshing
-  async function handleSessionExpiration() {
-    const { authToken, expirationTime } = retrieveAuthToken();
+ // session.js
+
+// Function to handle session expiration and token refreshing
+function handleSessionExpiration() {
+    const { authToken, expirationTime, remainingTime } = retrieveAuthToken();
   
     if (isTokenExpired(expirationTime)) {
       try {
-        await refreshAuthToken(); // Refresh the authentication token
+        refreshAuthToken(); // Refresh the authentication token
       } catch (error) {
         // Handle token refresh failure
       }
     }
+  
+    // Check remaining time periodically
+    const checkRemainingTime = setInterval(() => {
+      const { remainingTime } = retrieveAuthToken();
+  
+      if (remainingTime <= 0) {
+        clearInterval(checkRemainingTime); // Stop checking if remaining time is 0 or less
+  
+        // Perform necessary actions (e.g., prompt user to reauthenticate)
+      }
+    }, 1000); // Interval in milliseconds (1000 milliseconds = 1 second)
   }
+  
   
   export { retrieveAuthToken, isTokenExpired, refreshAuthToken, handleSessionExpiration };
   
