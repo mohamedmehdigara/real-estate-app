@@ -1,13 +1,20 @@
 // session.js
 
 // Function to retrieve the authentication token and its expiration time from storage
+// session.js
+
+// Function to retrieve the authentication token, its expiration time, and calculate the remaining time until expiration
 function retrieveAuthToken() {
     const authToken = localStorage.getItem('auth_token');
     const decodedToken = jwt.decode(authToken);
     const expirationTime = decodedToken && decodedToken.exp; // Expiration time in seconds
   
-    return { authToken, expirationTime };
+    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+    const remainingTime = expirationTime - currentTime; // Remaining time in seconds
+  
+    return { authToken, expirationTime, remainingTime };
   }
+  
   
   // Function to check if the token is expired
   function isTokenExpired(expirationTime) {
