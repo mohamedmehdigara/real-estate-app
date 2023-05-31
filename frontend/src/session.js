@@ -34,8 +34,12 @@ function retrieveAuthToken() {
  // session.js
 
 // Function to handle session expiration and token refreshing
+// session.js
+
+// Function to handle session expiration and token refreshing
 function handleSessionExpiration() {
     const { authToken, expirationTime, remainingTime } = retrieveAuthToken();
+    const threshold = 300; // Threshold in seconds (e.g., 5 minutes)
   
     if (isTokenExpired(expirationTime)) {
       try {
@@ -53,6 +57,13 @@ function handleSessionExpiration() {
         clearInterval(checkRemainingTime); // Stop checking if remaining time is 0 or less
   
         // Perform necessary actions (e.g., prompt user to reauthenticate)
+      } else if (remainingTime <= threshold) {
+        // Trigger token refreshing process
+        try {
+          refreshAuthToken(); // Refresh the authentication token
+        } catch (error) {
+          // Handle token refresh failure
+        }
       }
     }, 1000); // Interval in milliseconds (1000 milliseconds = 1 second)
   }
