@@ -27,6 +27,9 @@ function retrieveAuthToken() {
  // session.js
 
 // Function to refresh the authentication token
+// session.js
+
+// Function to refresh the authentication token
 function refreshAuthToken() {
   const expiredToken = localStorage.getItem('auth_token');
 
@@ -48,6 +51,7 @@ function refreshAuthToken() {
       // Handle token refresh failure
     });
 }
+
 
   
   // Function to handle session expiration and token refreshing
