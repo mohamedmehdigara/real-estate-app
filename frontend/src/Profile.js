@@ -9,17 +9,14 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        // Make an API request to retrieve the user's profile data
         const response = await axios.get('/api/profile', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
           },
         });
 
-        // Extract the profile data from the response
         const { name, email, phoneNumber } = response.data;
 
-        // Update the state variables with the profile data
         setName(name);
         setEmail(email);
         setPhoneNumber(phoneNumber);
@@ -31,13 +28,57 @@ const Profile = () => {
     fetchProfileData();
   }, []);
 
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    setPhoneNumber(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send updated profile data to the backend server
+      await axios.put('/api/profile', {
+        name,
+        email,
+        phoneNumber,
+      });
+
+      // Display success message or perform any other desired actions
+      console.log('Profile updated successfully!');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <h1>Profile</h1>
-      <p>Name: {name}</p>
-      <p>Email: {email}</p>
-      <p>Phone Number: {phoneNumber}</p>
-      {/* Add other profile information and components here */}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={handleNameChange} />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input type="email" value={email} onChange={handleEmailChange} />
+        </label>
+        <br />
+        <label>
+          Phone Number:
+          <input type="tel" value={phoneNumber} onChange={handlePhoneNumberChange} />
+        </label>
+        <br />
+        <button type="submit">Update Profile</button>
+      </form>
     </div>
   );
 };
