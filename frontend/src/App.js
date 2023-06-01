@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -10,11 +10,11 @@ import Contact from './Contact';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import PrivateRoute from './PrivateRoute';
-
+import withAuth from './withAuth';
 
 
 function App() {
-  const isAuthenticated = true; // Set the authentication status based on your application logic
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
     <Router>
@@ -27,6 +27,10 @@ function App() {
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route
+          path="/withAuth"
+          component={withAuth(Dashboard, isAuthenticated)}
+        />
         <PrivateRoute
           path="/dashboard"
           component={Dashboard}
