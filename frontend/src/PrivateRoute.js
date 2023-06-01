@@ -1,7 +1,7 @@
 e
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { validateAuthToken } from './utils'; // Import the token validation function
+import { Route, Navigate } from 'react-router-dom';
+import {validateAuthToken} from "utils"
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
   const authToken = localStorage.getItem('auth_token'); // Get the stored authentication token
@@ -14,7 +14,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
         isAuthenticated && decodedToken ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
+          <Navigate to="/login" />
         )
       }
     />

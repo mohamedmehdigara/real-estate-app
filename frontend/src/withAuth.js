@@ -1,12 +1,12 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const withAuth = (Component, isAuthenticated) => {
   return props =>
     isAuthenticated ? (
       <Component {...props} />
     ) : (
-      <Redirect to="/login" />
+      <Navigate to="/login" />
     );
 };
 
