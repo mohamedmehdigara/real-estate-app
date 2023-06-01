@@ -24,11 +24,31 @@ function retrieveAuthToken() {
   }
   
   // Function to refresh the authentication token
-  async function refreshAuthToken() {
-    // Implement your token refreshing logic here
-    // This can involve making an API request to your backend server with a refresh token
-    // and receiving a new authentication token in response
-  }
+ // session.js
+
+// Function to refresh the authentication token
+function refreshAuthToken() {
+  const expiredToken = localStorage.getItem('auth_token');
+
+  // Make a request to the backend server to refresh the token
+  axios.post('/refresh-token', { token: expiredToken })
+    .then(response => {
+      const newToken = response.data.token;
+
+      // Update the stored token with the new token
+      localStorage.setItem('auth_token', newToken);
+
+      // Optionally, update the token expiration time if provided by the server
+      const newExpirationTime = response.data.expirationTime;
+      if (newExpirationTime) {
+        localStorage.setItem('auth_token_expiration', newExpirationTime);
+      }
+    })
+    .catch(error => {
+      // Handle token refresh failure
+    });
+}
+
   
   // Function to handle session expiration and token refreshing
  // session.js
