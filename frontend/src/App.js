@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -9,8 +9,8 @@ import ThankYouPage from './ThankYouPage';
 import Contact from './Contact';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
-import PrivateRoute from './PrivateRoute';
 import Dashboard from './Dashboard';
+import Profile from './Profile';
 
 
 function App() {
