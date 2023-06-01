@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -27,12 +27,14 @@ function App() {
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
-        
-        <PrivateRoute
+
+        <Route
           path="/dashboard"
           element={<Dashboard />}
           isAuthenticated={isAuthenticated}
         />
+              
+
       </Routes>
       <Footer />
     </Router>
