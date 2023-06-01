@@ -10,7 +10,7 @@ import Contact from './Contact';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import PrivateRoute from './PrivateRoute';
-import withAuth from './withAuth';
+import Dashboard from './Dashboard';
 
 
 function App() {
@@ -27,13 +27,10 @@ function App() {
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route
-          path="/withAuth"
-          component={withAuth(Dashboard, isAuthenticated)}
-        />
+        
         <PrivateRoute
           path="/dashboard"
-          component={Dashboard}
+          element={<Dashboard />}
           isAuthenticated={isAuthenticated}
         />
       </Routes>

@@ -1,4 +1,4 @@
-e
+
 import React from 'react';
 import { Route, Navigate } from 'react-router-dom';
 import {validateAuthToken} from "utils"
