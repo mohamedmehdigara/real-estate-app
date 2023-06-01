@@ -30,6 +30,9 @@ function retrieveAuthToken() {
 // session.js
 
 // Function to refresh the authentication token
+// session.js
+
+// Function to refresh the authentication token
 function refreshAuthToken() {
   const expiredToken = localStorage.getItem('auth_token');
 
@@ -46,11 +49,18 @@ function refreshAuthToken() {
       if (newExpirationTime) {
         localStorage.setItem('auth_token_expiration', newExpirationTime);
       }
+
+      // Continue the user session without requiring reauthentication
+      // Here, you can trigger any necessary actions or update the UI accordingly
+      // For example, you can refresh user data, redirect to a protected page, etc.
     })
     .catch(error => {
       // Handle token refresh failure
+      // Prompt the user to reauthenticate
+      // Here, you can show an error message, redirect to the login page, etc.
     });
 }
+
 
 
   
