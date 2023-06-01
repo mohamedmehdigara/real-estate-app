@@ -101,6 +101,25 @@ function handleSessionExpiration() {
       }
     }, 1000); // Interval in milliseconds (1000 milliseconds = 1 second)
   }
+
+  // Logout function
+function logout() {
+  // Clear the authentication token from the token storage mechanism
+  localStorage.removeItem('auth_token');
+
+  // Perform additional cleanup tasks if needed
+
+  // Redirect the user to the login page or any other desired page
+  window.location.href = '/login';
+}
+
+// Usage of the logout function
+function LogoutButton() {
+  return (
+    <button onClick={logout}>Logout</button>
+  );
+}
+
   
   
   export { retrieveAuthToken, isTokenExpired, refreshAuthToken, handleSessionExpiration };
