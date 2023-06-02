@@ -40,23 +40,32 @@ const Profile = () => {
     setPhoneNumber(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
     try {
-      // Send updated profile data to the backend server
-      await axios.put('/api/profile', {
+      // Send a request to the backend server to update the profile
+      const response = await axios.put('/api/profile', {
         name,
         email,
         phoneNumber,
+        // Include other profile attributes as needed
       });
   
-      // Display success message or perform any other desired actions
-      console.log('Profile updated successfully!');
+      // Check the response status and display appropriate messages
+      if (response.status === 200) {
+        // Profile update successful
+        setMessage('Profile updated successfully.');
+      } else {
+        // Handle other possible response statuses or error scenarios
+        setMessage('An error occurred while updating the profile.');
+      }
     } catch (error) {
-      console.log(error);
+      // Handle any errors that occurred during the request
+      setMessage('An error occurred while updating the profile.');
     }
   };
+  
   
 
   return (
