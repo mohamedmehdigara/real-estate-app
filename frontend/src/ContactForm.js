@@ -17,8 +17,8 @@ const ContactForm = () => {
     try {
       // Fetch the user's profile data from the backend
       const userProfile = await getUserProfile();
-
-      // Set the form fields with the retrieved profile data
+  
+      // Update the state variables with the retrieved profile data
       setName(userProfile.name);
       setEmail(userProfile.email);
       setPhoneNumber(userProfile.phoneNumber);
@@ -27,7 +27,31 @@ const ContactForm = () => {
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
     }
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      // Create an object with the updated profile data
+      const updatedProfile = {
+        name,
+        email,
+        phoneNumber,
+        location,
+        propertyPreferences,
+      };
+    
+      try {
+        // Send the updated profile data to the backend
+        await updateProfile(updatedProfile);
+        setSuccessMessage('Profile updated successfully');
+      } catch (error) {
+        setErrorMessage('Failed to update profile');
+        console.error('Failed to update profile:', error);
+      }
+    };
+    
   };
+  
 
   // Rest of the component code...
 
