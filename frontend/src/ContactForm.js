@@ -42,8 +42,14 @@ const ContactForm = () => {
     
       try {
         // Send the updated profile data to the backend
-        await updateProfile(updatedProfile);
-        setSuccessMessage('Profile updated successfully');
+        const response = await updateProfile(updatedProfile);
+        
+        // Check the response status
+        if (response.status === 200) {
+          setSuccessMessage('Profile updated successfully');
+        } else {
+          setErrorMessage('Failed to update profile');
+        }
       } catch (error) {
         setErrorMessage('Failed to update profile');
         console.error('Failed to update profile:', error);
