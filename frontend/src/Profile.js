@@ -70,27 +70,40 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>Profile</h1>
+      <h2>User Profile</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={name} onChange={handleNameChange} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="email" value={email} onChange={handleEmailChange} />
-        </label>
-        <br />
-        <label>
-          Phone Number:
-          <input type="tel" value={phoneNumber} onChange={handlePhoneNumberChange} />
-        </label>
-        <br />
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="phoneNumber">Phone Number:</label>
+          <input
+            type="text"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(event) => setPhoneNumber(event.target.value)}
+          />
+        </div>
+        {/* Add other profile attributes as needed */}
         <button type="submit">Update Profile</button>
       </form>
     </div>
   );
-};
+}
 
 export default Profile;
