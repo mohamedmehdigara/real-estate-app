@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { updateContactDetails } from './api';
+import { getUserProfile } from './api';
 import './ContactForm.css';
 
 const ContactForm = () => {
@@ -10,40 +10,26 @@ const ContactForm = () => {
   const [propertyPreferences, setPropertyPreferences] = useState('');
 
   useEffect(() => {
-    // Fetch user's existing contact details and preferences
-    fetchUserDetails();
+    fetchUserProfile();
   }, []);
 
-  const fetchUserDetails = async () => {
-    // TODO: Fetch user details from the backend and set the state variables
-    // Example: const userDetails = await getUserDetails();
-    // setName(userDetails.name);
-    // setEmail(userDetails.email);
-    // setPhoneNumber(userDetails.phoneNumber);
-    // setLocation(userDetails.location);
-    // setPropertyPreferences(userDetails.propertyPreferences);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Prepare the updated contact details and preferences
-    const updatedDetails = {
-      name,
-      email,
-      phoneNumber,
-      location,
-      propertyPreferences,
-    };
-
+  const fetchUserProfile = async () => {
     try {
-      // TODO: Send the updated details to the backend to save
-      await updateContactDetails(updatedDetails);
-      console.log('Contact details updated successfully');
+      // Fetch the user's profile data from the backend
+      const userProfile = await getUserProfile();
+
+      // Set the form fields with the retrieved profile data
+      setName(userProfile.name);
+      setEmail(userProfile.email);
+      setPhoneNumber(userProfile.phoneNumber);
+      setLocation(userProfile.location);
+      setPropertyPreferences(userProfile.propertyPreferences);
     } catch (error) {
-      console.error('Failed to update contact details:', error);
+      console.error('Failed to fetch user profile:', error);
     }
   };
+
+  // Rest of the component code...
 
   return (
     <div className="contact-form-container">
@@ -100,3 +86,4 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
