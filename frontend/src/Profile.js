@@ -42,7 +42,7 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       // Send updated profile data to the backend server
       await axios.put('/api/profile', {
@@ -50,13 +50,14 @@ const Profile = () => {
         email,
         phoneNumber,
       });
-
+  
       // Display success message or perform any other desired actions
       console.log('Profile updated successfully!');
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   return (
     <div>
