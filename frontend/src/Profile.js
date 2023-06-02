@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getUserProfile, updateProfile } from './api';
+import './Profile.css';
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -7,72 +8,37 @@ const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = await axios.get('/api/profile', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-          },
-        });
-
-        const { name, email, phoneNumber } = response.data;
-
-        setName(name);
-        setEmail(email);
-        setPhoneNumber(phoneNumber);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchProfileData();
+    // Fetch user profile data when component mounts
+    fetchUserProfile();
   }, []);
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
+  const fetchUserProfile = async () => {
+    try {
+      const userProfile = await getUserProfile();
+      setName(userProfile.name);
+      setEmail(userProfile.email);
+      setPhoneNumber(userProfile.phoneNumber);
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
-      // Send a request to the backend server to update the profile
-      const response = await axios.put('/api/profile', {
-        name,
-        email,
-        phoneNumber,
-        // Include other profile attributes as needed
-      });
-  
-      // Check the response status and display appropriate messages
-      if (response.status === 200) {
-        // Profile update successful
-        setMessage('Profile updated successfully.');
-      } else {
-        // Handle other possible response statuses or error scenarios
-        setMessage('An error occurred while updating the profile.');
-      }
+      await updateProfile({ name, email, phoneNumber });
+      console.log('Profile updated successfully');
     } catch (error) {
-      // Handle any errors that occurred during the request
-      setMessage('An error occurred while updating the profile.');
+      console.error('Failed to update profile:', error);
     }
   };
-  
-  
 
   return (
-    <div>
-      <h2>User Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="profile-container">
+      <h2 className="profile-heading">User Profile</h2>
+      <form className="profile-form" onSubmit={handleSubmit}>
+        <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input
             type="text"
@@ -81,7 +47,7 @@ const Profile = () => {
             onChange={(event) => setName(event.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -90,7 +56,7 @@ const Profile = () => {
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="phoneNumber">Phone Number:</label>
           <input
             type="text"
@@ -99,11 +65,11 @@ const Profile = () => {
             onChange={(event) => setPhoneNumber(event.target.value)}
           />
         </div>
-        {/* Add other profile attributes as needed */}
-        <button type="submit">Update Profile</button>
+        <button type="submit" className="profile-submit-btn">Update Profile</button>
       </form>
     </div>
   );
-}
+};
 
 export default Profile;
+
