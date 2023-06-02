@@ -1,64 +1,102 @@
-import React, {useState} from 'react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { updateContactDetails } from './api';
 import './ContactForm.css';
 
+const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [location, setLocation] = useState('');
+  const [propertyPreferences, setPropertyPreferences] = useState('');
 
-function ContactForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [isSubmitted, setIsSubmitted] = useState(false);
-    const navigate = useNavigate();
+  useEffect(() => {
+    // Fetch user's existing contact details and preferences
+    fetchUserDetails();
+  }, []);
 
+  const fetchUserDetails = async () => {
+    // TODO: Fetch user details from the backend and set the state variables
+    // Example: const userDetails = await getUserDetails();
+    // setName(userDetails.name);
+    // setEmail(userDetails.email);
+    // setPhoneNumber(userDetails.phoneNumber);
+    // setLocation(userDetails.location);
+    // setPropertyPreferences(userDetails.propertyPreferences);
+  };
 
-  
-    const onSubmit = (data) => {
-        axios.post('https://example.com/api/contact', data)
-        .then(response => {
-          // Handle successful form submission
-          console.log(response.data);
-          setIsSubmitted(true);
-          navigate('/thank-you');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        })
-        .catch(error => {
-          // Handle form submission error
-          console.log(error);
-        });
+    // Prepare the updated contact details and preferences
+    const updatedDetails = {
+      name,
+      email,
+      phoneNumber,
+      location,
+      propertyPreferences,
     };
-  
-    return (
-        <div>
-        {isSubmitted ? (
-            <p>Thank you for your message! We will get back to you soon.</p>
-          ) : (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="name">Name</label>
-        <input {...register("name", { required: true })} />
-        {errors.name && <span>This field is required</span>}
-  
-        <label htmlFor="email">Email</label>
-        <input {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
-        {errors.email && <span>This field is required and should be a valid email address</span>}
-  
-        <label htmlFor="phone">Phone Number</label>
-        <input {...register("phone", { required: true })} />
-        {errors.phone && <span>This field is required</span>}
-  
-        <label htmlFor="subject">Subject</label>
-        <input {...register("subject", { required: true })} />
-        {errors.subject && <span>This field is required</span>}
-  
-        <label htmlFor="message">Message</label>
-        <textarea {...register("message", { required: true })} />
-        {errors.message && <span>This field is required</span>}
-  
-        <button type="submit">Submit</button>
-      </form>
-    )
+
+    try {
+      // TODO: Send the updated details to the backend to save
+      await updateContactDetails(updatedDetails);
+      console.log('Contact details updated successfully');
+    } catch (error) {
+      console.error('Failed to update contact details:', error);
     }
+  };
 
-  </div>
-    );}
+  return (
+    <div className="contact-form-container">
+      <h2 className="contact-form-heading">Update Contact Details</h2>
+      <form className="contact-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="phoneNumber">Phone Number:</label>
+          <input
+            type="text"
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(event) => setPhoneNumber(event.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="location">Preferred Location:</label>
+          <input
+            type="text"
+            id="location"
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="propertyPreferences">Property Preferences:</label>
+          <textarea
+            id="propertyPreferences"
+            value={propertyPreferences}
+            onChange={(event) => setPropertyPreferences(event.target.value)}
+          ></textarea>
+        </div>
+        <button type="submit" className="contact-form-submit-btn">Update</button>
+      </form>
+    </div>
+  );
+};
 
-export default ContactForm  
+export default ContactForm;
