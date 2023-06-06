@@ -82,6 +82,30 @@ export const getUserProfile = async () => {
       throw error;
     }
   };
+  // api.js
+
+// ... other imports and code ...
+
+export const updateProfile = async (profileData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/user/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+      body: JSON.stringify(profileData),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to update user profile:', error);
+    throw error;
+  }
+};
+
+// ... other API functions ...
+
   
   // ... other API functions ...
   
