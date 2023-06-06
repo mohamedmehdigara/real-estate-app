@@ -4,7 +4,6 @@ import Logout from './Logout';
 
 function Header() {
   return (
-    <header>
       <nav>
         <ul>
           <li>
@@ -24,7 +23,7 @@ function Header() {
           </li>
         </ul>
       </nav>
-    </header>
+    
   );
 }
 
