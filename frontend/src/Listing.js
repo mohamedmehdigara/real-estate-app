@@ -8,32 +8,13 @@ const Listing = () => {
   const [priceRangeFilter, setPriceRangeFilter] = useState('');
   const [bedroomsFilter, setBedroomsFilter] = useState('');
   const [bathroomsFilter, setBathroomsFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [listingsPerPage] = useState(10); // Set the desired number of listings per page
 
   const fetchPropertyListings = async () => {
     try {
-      // Build the query string based on the selected filters
-      let queryString = '/api/property-listings?';
-      if (propertyTypeFilter) {
-        queryString += `propertyType=${propertyTypeFilter}&`;
-      }
-      if (priceRangeFilter) {
-        queryString += `priceRange=${priceRangeFilter}&`;
-      }
-      if (bedroomsFilter) {
-        queryString += `bedrooms=${bedroomsFilter}&`;
-      }
-      if (bathroomsFilter) {
-        queryString += `bathrooms=${bathroomsFilter}&`;
-      }
-
-      // Send the API request with the query string
-      const response = await fetch(queryString);
-      if (response.ok) {
-        const data = await response.json();
-        setPropertyListings(data);
-      } else {
-        console.error('Failed to fetch property listings');
-      }
+      const response = await fetch(`/api/property-listings?page=${currentPage}&limit=${listingsPerPage}`);
+      // Handle the response and update the propertyListings state variable
     } catch (error) {
       console.error('Failed to fetch property listings:', error);
     }
@@ -41,67 +22,44 @@ const Listing = () => {
 
   useEffect(() => {
     fetchPropertyListings();
-  }, [propertyTypeFilter, priceRangeFilter, bedroomsFilter, bathroomsFilter]);
+  }, [currentPage, listingsPerPage]);
 
-  // ...
+  const totalPages = Math.ceil(propertyListings.length / listingsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div>
-      <h1>Property Listings</h1>
-      <div>
-        {/* Property Type Filter */}
-        <label>Property Type:</label>
-        <select
-          value={propertyTypeFilter}
-          onChange={(e) => setPropertyTypeFilter(e.target.value)}
-        >
-          <option value="">All</option>
-          <option value="house">House</option>
-          <option value="apartment">Apartment</option>
-          {/* Add other property types */}
-        </select>
-
-        {/* Price Range Filter */}
-        <label>Price Range:</label>
-        <input
-          type="text"
-          value={priceRangeFilter}
-          onChange={(e) => setPriceRangeFilter(e.target.value)}
-        />
-
-        {/* Bedrooms Filter */}
-        <label>Bedrooms:</label>
-        <input
-          type="text"
-          value={bedroomsFilter}
-          onChange={(e) => setBedroomsFilter(e.target.value)}
-        />
-
-        {/* Bathrooms Filter */}
-        <label>Bathrooms:</label>
-        <input
-          type="text"
-          value={bathroomsFilter}
-          onChange={(e) => setBathroomsFilter(e.target.value)}
-        />
-
-        <button onClick={fetchPropertyListings}>Apply Filters</button>
-      </div>
-
-      {/* Display property listings */}
+      <Header />
+      {/* Property listings */}
       {propertyListings.length > 0 ? (
         <ul>
-          {propertyListings.map((property) => (
-            <li key={property.id}>
-              <p>{property.title}</p>
-              <p>{property.description}</p>
-              {/* Display other property details */}
-            </li>
-          ))}
+          {/* Display listings for the current page */}
+          {propertyListings
+            .slice((currentPage - 1) * listingsPerPage, currentPage * listingsPerPage)
+            .map((property) => (
+              // Render each property listing
+              <li key={property.id}>{property.name}</li>
+            ))}
         </ul>
       ) : (
         <p>No property listings found.</p>
       )}
+
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <div>
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+            <button key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
+              {pageNumber}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <Footer />
     </div>
   );
 };
