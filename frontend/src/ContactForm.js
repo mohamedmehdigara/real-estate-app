@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserProfile } from './api';
+import { getUserProfile, updateProfile } from './api';
 import './ContactForm.css';
 
 const ContactForm = () => {
@@ -15,10 +15,7 @@ const ContactForm = () => {
 
   const fetchUserProfile = async () => {
     try {
-      // Fetch the user's profile data from the backend
       const userProfile = await getUserProfile();
-  
-      // Update the state variables with the retrieved profile data
       setName(userProfile.name);
       setEmail(userProfile.email);
       setPhoneNumber(userProfile.phoneNumber);
@@ -27,39 +24,31 @@ const ContactForm = () => {
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
     }
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-    
-      // Create an object with the updated profile data
-      const updatedProfile = {
-        name,
-        email,
-        phoneNumber,
-        location,
-        propertyPreferences,
-      };
-    
-      try {
-        // Send the updated profile data to the backend
-        const response = await updateProfile(updatedProfile);
-        
-        // Check the response status
-        if (response.status === 200) {
-          setSuccessMessage('Profile updated successfully');
-        } else {
-          setErrorMessage('Failed to update profile');
-        }
-      } catch (error) {
-        setErrorMessage('Failed to update profile');
-        console.error('Failed to update profile:', error);
-      }
-    };
-    
   };
-  
 
-  // Rest of the component code...
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const updatedProfile = {
+      name,
+      email,
+      phoneNumber,
+      location,
+      propertyPreferences,
+    };
+  
+    try {
+      const response = await updateProfile(updatedProfile);
+      
+      if (response.status === 200) {
+        console.log('Profile updated successfully');
+      } else {
+        console.error('Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    }
+  };
 
   return (
     <div className="contact-form-container">
@@ -116,4 +105,3 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
-

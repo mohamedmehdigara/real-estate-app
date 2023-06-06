@@ -67,29 +67,22 @@ const api = {
   // Add more custom API functions for your specific endpoints and requirements
 };
 
-// api.js
-
-// ... other imports and code ...
-
 export const getUserProfile = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/user/profile`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-      throw error;
-    }
-  };
-  // api.js
-
-// ... other imports and code ...
+  try {
+    const response = await fetch(`${API_BASE_URL}/user/profile`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch user profile:', error);
+    throw error;
+  }
+};
 
 export const updateProfile = async (profileData) => {
   try {
@@ -109,11 +102,4 @@ export const updateProfile = async (profileData) => {
   }
 };
 
-// ... other API functions ...
-
-  
-  // ... other API functions ...
-  
-
 export default api;
-

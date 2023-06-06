@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Logout from './Logout';
 
-
 function Header() {
   return (
     <header>
@@ -13,8 +12,15 @@ function Header() {
           </li>
           <li>
             <Link to="/listing">Listings</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
             <Logout />
-
           </li>
         </ul>
       </nav>
@@ -23,3 +29,5 @@ function Header() {
 }
 
 export default Header;
+
+

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -13,12 +13,10 @@ import Dashboard from './Dashboard';
 import Profile from './Profile';
 import L from 'leaflet';
 
-// Your application code, including map-related code, goes here
-
-
-
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Your application code, including map-related code using L, goes here
 
   return (
     <Router>
@@ -31,17 +29,17 @@ function App() {
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route
           path="/dashboard"
           element={<Dashboard />}
           isAuthenticated={isAuthenticated}
         />
-              
-
       </Routes>
       <Footer />
     </Router>
   );
 }
+
 export default App;
