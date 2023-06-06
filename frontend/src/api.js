@@ -1,3 +1,8 @@
+const getAuthToken = () => {
+  // Implement your logic to retrieve the authentication token from storage or context
+  // and return it here.
+};
+
 const API_BASE_URL = 'http://localhost:8000'; // Replace with your actual backend server URL
 
 const api = {
