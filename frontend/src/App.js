@@ -11,6 +11,10 @@ import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
+import L from 'leaflet';
+
+// Your application code, including map-related code, goes here
+
 
 
 function App() {
